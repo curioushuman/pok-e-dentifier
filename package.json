@@ -1,7 +1,7 @@
 {
-  "name": "turborepo-vue-starter",
-  "author": "Arneesh Aima",
-  "version": "0.0.0",
+  "name": "pok-e-dentifier",
+  "author": "Mike Kelly",
+  "version": "0.1.0",
   "private": true,
   "workspaces": [
     "apps/*",
@@ -20,6 +20,5 @@
   "engines": {
     "npm": ">=7.0.0",
     "node": ">=14.0.0"
-  },
-  "packageManager": "yarn@1.22.15"
+  }
 }
