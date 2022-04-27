@@ -1,6 +1,6 @@
 {
-  "name": "web",
-  "version": "0.1.0",
+  "name": "pok-e-dentifier-web",
+  "version": "0.0.1",
   "author": "Mike Kelly",
   "scripts": {
     "serve": "vite preview",
