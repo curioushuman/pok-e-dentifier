@@ -13,6 +13,9 @@ coverage
 out/
 build
 
+# nuxt.js
+.nuxt/
+
 # misc
 .DS_Store
 *.pem
