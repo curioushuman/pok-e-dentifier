@@ -16,6 +16,15 @@ At this stage, we don't employ necessarily *all* of the benefits of Nx as a mono
 - K8s for service delivery
 - Inconsistent results for Vue (et al) within Nx
 
+Things I would like to work on next:
+
+- Taking full advantage of Nx build and build caching
+  - Currently we build within the respective Dockerfiles
+    - Which means semi-duplicated package.json files
+    - And potential productivity costs
+  - When there is time I will play with this further
+    - May require some faffing on the Quasar front
+
 # Setup
 
 ## K8s
