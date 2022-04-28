@@ -1,5 +1,0 @@
-{
-  // ! DOES NOT (currently) extend Turborepo shared tsconfig
-  // https://v3.nuxtjs.org/concepts/typescript
-  "extends": "./.nuxt/tsconfig.json"
-}
