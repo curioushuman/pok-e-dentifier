@@ -4,6 +4,42 @@ For those embarrassing pokemon moments..
 
 # Setup
 
+# Development
+
+## Running in dev mode
+
+Run all the apps (aggh):
+
+```bash
+$ npm run dev
+```
+
+Run just one of them:
+
+```bash
+$ turbo run dev --filter=./apps/nuxt-app
+```
+
+For more info on [turbo --filter](https://turborepo.org/docs/core-concepts/filtering) hit the [docs](https://turborepo.org/docs).
+
+## Installing packages
+
+```bash
+# Install from root, calling out the app/package target
+# npm i --workspace <app_name> <package_name>
+$ npm i --workspace web buefy
+```
+
+# Important notes
+
+## Typescript configuration
+
+Turborepo uses a `base.json` TS configuration file that is intended to be shared by all or some of the apps within the monorepo. It is not a hard and fast rule, but useful if you would like to employ it.
+
+Apps not currently using shared tsconfig base:
+
+- nuxt-app
+
 # Extending the repo
 
 ## Adding additional Vue-based apps
