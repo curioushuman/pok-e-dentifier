@@ -2,6 +2,12 @@
 
 For those embarrassing pokemon moments..
 
+# Built with
+
+- Turborepo
+- Quasar
+- Nest.js
+
 # Setup
 
 # Development
@@ -17,7 +23,7 @@ $ npm run dev
 Run just one of them:
 
 ```bash
-$ turbo run dev --filter=./apps/nuxt-app
+$ turbo run dev --filter=./apps/web
 ```
 
 For more info on [turbo --filter](https://turborepo.org/docs/core-concepts/filtering) hit the [docs](https://turborepo.org/docs).
@@ -27,10 +33,15 @@ For more info on [turbo --filter](https://turborepo.org/docs/core-concepts/filte
 ```bash
 # Install from root, calling out the app/package target
 # npm i --workspace <app_name> <package_name>
+# npm i -w <app_name> <package_name>
 $ npm i --workspace web tailwindcss
 ```
 
-# Important notes
+# App specific notes
+
+TBC
+
+# Appendix
 
 ## Typescript configuration
 
@@ -38,12 +49,27 @@ Turborepo uses a `base.json` TS configuration file that is intended to be shared
 
 Apps not currently using shared tsconfig base:
 
-- nuxt-app
-- tailwind
+- quasar
+- web
 
-# Extending the repo
+## Inspiration / Props
 
-## Adding additional Vue-based apps
+Thanks to these repos for inspiration and some core code/structure:
+
+- https://github.com/arneesh/turborepo-vue-starter
+
+Other repos I found that I would like to experiment with soon:
+
+- https://github.com/initred/nuxt3-tailwindcss3-starter-kit
+  - Nuxt3 and Tailwind loveliness
+  - _Issues_
+    - Couldn't get Nuxt to resolve node_modules from monorepo root
+- https://github.com/ycjcl868/monorepo
+  - PNMP + Rollup modularity
+  - _Issues_
+    - I need to spend some time with PNPM and Rollup first
+
+## Adding additional vanilla Vue apps
 
 ### 1. Create Vue App
 
@@ -86,31 +112,3 @@ Vitest has already been included as a dev-dependency at root, you'll just need t
   }
 }
 ```
-
-# App specific notes
-
-## Tailwind
-
-### Issues
-
-There were some issues when this was brought into a Turborepo context. I've managed to iron out a couple, but I'm going to have to save some for later.
-
-**It is confused by it's place in the monorepo**
-
-Cannot find node_modules at the monorepo root...
-
-**Other**
-
-TBH related to the same problem.
-
-- nuxt.config.js
-  - vueuse.ssrHandlers
-
-# Appendix
-
-## Inspiration / Props
-
-Thanks to these repos for inspiration and some core code/structure:
-
-- https://github.com/arneesh/turborepo-vue-starter
-- https://github.com/initred/nuxt3-tailwindcss3-starter-kit
