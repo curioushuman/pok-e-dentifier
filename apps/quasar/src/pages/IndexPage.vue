@@ -16,8 +16,12 @@
         </div>
 
         <div class="q-pa-md q-gutter-md">
-          <a-button label="Join us" />
-          <a-button label="Show me how it works" button-type="tertiary" />
+          <a-button label="Join us" to="/main" />
+          <a-button
+            label="Show me how it works"
+            button-type="tertiary"
+            to="/main"
+          />
         </div>
       </div>
     </div>

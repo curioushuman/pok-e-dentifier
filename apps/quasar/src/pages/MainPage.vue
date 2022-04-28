@@ -19,13 +19,11 @@
     </div>
     <div class="row">
       <div class="col-xs-12 col-md-6">
-        <h2>Tiny tim</h2>
-        <q-img
-          src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/132.png"
-          alt="An embarrassed Psyduck"
-        />
+        <m-pokemon-highlight />
       </div>
-      <div class="col-xs-12 col-md-6"></div>
+      <div class="col-xs-12 col-md-6">
+        <m-pokemon-details />
+      </div>
     </div>
   </q-page>
 </template>
@@ -33,8 +31,12 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+import MPokemonDetails from 'components/molecules/MPokemonDetails.vue';
+import MPokemonHighlight from 'components/molecules/MPokemonHighlight.vue';
+
 export default defineComponent({
   name: 'IndexPage',
+  components: { MPokemonDetails, MPokemonHighlight },
   setup() {
     const welcomeMessage = 'For those embarrassing Pokemon moments...';
     return { welcomeMessage };
