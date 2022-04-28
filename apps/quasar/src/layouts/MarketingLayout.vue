@@ -17,14 +17,8 @@
           v-if="$q.screen.gt.sm"
           class="GL__toolbar-link q-ml-xs q-gutter-md text-body2 text-weight-bold row items-center no-wrap"
         >
-          <q-btn
-            unelevated
-            rounded
-            color="white"
-            text-color="black"
-            size="sm"
-            label="Join us"
-          />
+          <a-button label="Join us" button-type="toolbar" />
+
           <a href="javascript:void(0)" class="text-white"> Sign in </a>
         </div>
 
@@ -71,6 +65,7 @@
 import { ref } from 'vue';
 
 import ALogo from 'components/atoms/ALogo.vue';
+import AButton from 'components/atoms/AButton.vue';
 
 const stringOptions = [
   'quasarframework/quasar',
@@ -79,7 +74,7 @@ const stringOptions = [
 
 export default {
   name: 'MarketingLayout',
-  components: { ALogo },
+  components: { ALogo, AButton },
 
   setup() {
     const text = ref('');

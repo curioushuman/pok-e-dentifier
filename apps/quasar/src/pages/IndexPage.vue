@@ -16,9 +16,8 @@
         </div>
 
         <div class="q-pa-md q-gutter-md">
-          <!-- TODO: These need to be standardised in an atomic component -->
-          <q-btn unelevated rounded color="primary" size="xl" label="Join us" />
-          <q-btn flat color="dark" size="md" label="Show me how it works" />
+          <a-button label="Join us" />
+          <a-button label="Show me how it works" button-type="tertiary" />
         </div>
       </div>
     </div>
@@ -29,8 +28,11 @@
 import { defineComponent, computed } from 'vue';
 import { useQuasar } from 'quasar';
 
+import AButton from 'components/atoms/AButton.vue';
+
 export default defineComponent({
   name: 'IndexPage',
+  components: { AButton },
   setup() {
     const $q = useQuasar();
     const classWelcome = computed(() => {
