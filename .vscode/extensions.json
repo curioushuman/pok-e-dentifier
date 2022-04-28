@@ -3,7 +3,9 @@
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "editorconfig.editorconfig",
-    "johnsoncodehk.volar"
+    "johnsoncodehk.volar",
+    "bradlc.vscode-tailwindcss",
+    "antfu.iconify"
   ],
   "unwantedRecommendations": [
     "octref.vetur",

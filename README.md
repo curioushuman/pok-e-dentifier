@@ -85,3 +85,12 @@ Vitest has already been included as a dev-dependency at root, you'll just need t
   }
 }
 ```
+
+# Appendix
+
+## Inspiration / Props
+
+Thanks to these repos for inspiration and some core code/structure:
+
+- https://github.com/arneesh/turborepo-vue-starter
+- https://github.com/initred/nuxt3-tailwindcss3-starter-kit
