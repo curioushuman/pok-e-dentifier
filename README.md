@@ -27,7 +27,7 @@ For more info on [turbo --filter](https://turborepo.org/docs/core-concepts/filte
 ```bash
 # Install from root, calling out the app/package target
 # npm i --workspace <app_name> <package_name>
-$ npm i --workspace web buefy
+$ npm i --workspace web tailwindcss
 ```
 
 # Important notes
@@ -39,6 +39,7 @@ Turborepo uses a `base.json` TS configuration file that is intended to be shared
 Apps not currently using shared tsconfig base:
 
 - nuxt-app
+- tailwind
 
 # Extending the repo
 
@@ -85,6 +86,25 @@ Vitest has already been included as a dev-dependency at root, you'll just need t
   }
 }
 ```
+
+# App specific notes
+
+## Tailwind
+
+### Issues
+
+There were some issues when this was brought into a Turborepo context. I've managed to iron out a couple, but I'm going to have to save some for later.
+
+**It is confused by it's place in the monorepo**
+
+Cannot find node_modules at the monorepo root...
+
+**Other**
+
+TBH related to the same problem.
+
+- nuxt.config.js
+  - vueuse.ssrHandlers
 
 # Appendix
 

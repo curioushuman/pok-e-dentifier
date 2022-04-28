@@ -58,6 +58,10 @@
     "unplugin-icons": "^0.13.2",
     "unplugin-vue-components": "^0.17.18"
   },
+  "overrides": {
+    "@nuxt/kit": "npm:@nuxt/kit-edge@latest",
+    "@nuxt/kit-edge": "latest"
+  },
   "engines": {
     "npm": ">=7.0.0",
     "node": "^18 || ^16 || ^14.19"

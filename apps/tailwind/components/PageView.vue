@@ -1,6 +1,7 @@
 <script setup lang="ts">
-const { data } = await useFetch('/api/pageview')
-const time = useTimeAgo(computed(() => data.value.startAt))
+import { useFetch, useTimeAgo } from '@vueuse/core';
+const { data } = await useFetch('/api/pageview');
+const time = useTimeAgo(computed(() => data.value.startAt));
 </script>
 
 <template>
