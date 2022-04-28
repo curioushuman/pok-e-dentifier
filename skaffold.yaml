@@ -1,0 +1,32 @@
+apiVersion: skaffold/v2beta27
+kind: Config
+deploy:
+  # kubeContext: "minikube"
+  kubeContext: "docker-desktop"
+  helm:
+    releases:
+    # TODO create chart museum and draw from there
+    - name: rbc-api
+      version: ~1.0.2
+      chartPath: ../rbc-k8s/core/helm/rbc-api
+      namespace: rbc-dev
+      createNamespace: true
+      artifactOverrides:
+        image: curioushuman/rbc-api
+      imageStrategy:
+        helm: {}
+build:
+  local:
+    push: false
+  artifacts:
+    - image: curioushuman/rbc-api
+      context: .
+      docker:
+        dockerfile: apps/api/Dockerfile
+        target: development
+      sync:
+        manual:
+          - src: 'apps/api/src/**/*.ts'
+            dest: '/usr/src/app/'
+          - src: 'libs/shared/**/*.ts'
+            dest: '/usr/src/app/'

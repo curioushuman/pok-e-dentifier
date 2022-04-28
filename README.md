@@ -2,113 +2,126 @@
 
 For those embarrassing pokemon moments..
 
-# Built with
+## Built with
 
-- Turborepo
+- Nx
 - Quasar
 - Nest.js
+- K8s
+
+## Important notes
+
+At this stage, we don't employ necessarily *all* of the benefits of Nx as a monorepo provider. This is mainly down to:
+
+- K8s for service delivery
+- Inconsistent results for Vue (et al) within Nx
 
 # Setup
 
-# Development
+## K8s
 
-## Running in dev mode
+Need the poke-k8s repo to be cloned and in the same directory as this one. Just as we work on them together, it is quicker to draw from local files rather than a chart museum.
 
-Run all the apps (aggh):
+**TODO**
 
-```bash
-$ npm run dev
-```
+- Draw the k8s setup from repo museum
 
-Run just one of them:
+# API
 
-```bash
-$ turbo run dev --filter=./apps/web
-```
+## Testing
 
-For more info on [turbo --filter](https://turborepo.org/docs/core-concepts/filtering) hit the [docs](https://turborepo.org/docs).
+### Unit tests
 
-## Installing packages
+Handled *outside of k8s* via Jest, managed by Nx.
 
 ```bash
-# Install from root, calling out the app/package target
-# npm i --workspace <app_name> <package_name>
-# npm i -w <app_name> <package_name>
-$ npm i --workspace web tailwindcss
+$ nx run api:test-unit
+# To leave it running
+$ nx run api:test-unit --watch
 ```
 
-# App specific notes
+Matches files using Jest [standard testMatch pattern](https://jestjs.io/docs/configuration#testmatch-arraystring).
 
-TBC
+### Integration tests
+
+Handled *outside of k8s* via Jest, managed by Nx.
+
+```bash
+$ nx run api:test-integration
+```
+
+Matches files with the file pattern `*.ispec.ts`.
+
+### Unit + Integration
+
+Handled *outside of k8s* via Jest, managed by Nx.
+
+```bash
+$ nx run api:test
+```
+
+Matches both of the above patterns.
+
+### E2E tests
+
+Handled **INSIDE of k8s** via Jest, supported by Nx, enabled via Skaffold.
+
+```bash
+# Tells skaffold.yaml to use the 'test' stage of Docker container
+$ nx run api:pre-test-e2e
+# Then tests are automatically run and watched within k8s
+$ skaffold dev
+```
+
+Matches files with the file pattern `*.e2e.ts`.
+
+### Manual testing within Kubernetes
+
+Handled **INSIDE of k8s** via Nest cli, supported by Nx, enabled via Skaffold.
+
+```bash
+# Tells skaffold.yaml to use the 'development' stage of Docker container
+$ nx run api:pre-dev
+# Skaffold will deploy k8s and Nest will start
+$ skaffold dev
+```
+
+This will spin up the k8s cluster, and start Nest with:
+
+- hot reloading
+- watch
+
+**Note:** you only have to run pre-dev if you've previously been running e2e tests.
 
 # Appendix
 
-## Typescript configuration
+## Inspiration
 
-Turborepo uses a `base.json` TS configuration file that is intended to be shared by all or some of the apps within the monorepo. It is not a hard and fast rule, but useful if you would like to employ it.
+### API
 
-Apps not currently using shared tsconfig base:
+* [VincentJouanne/nest-clean-architecture](https://github.com/VincentJouanne/nest-clean-architecture)
+  * Very tidy, very advanced combination of Nest.js & DDD
 
-- quasar
-- web
+## Important notes / decisions
 
-## Inspiration / Props
+### Testing
 
-Thanks to these repos for inspiration and some core code/structure:
+**#1 We have specifically not included skaffold within Nx**
 
-- https://github.com/arneesh/turborepo-vue-starter
+- It disables Skaffold's natural rollback function upon CTRL+C (as the CTRL C is picked up only by Nx)
+- It has no dependencies that Nx can help us with (as Skaffold will rebuild from Dockerfile anyway)
+- It disables Skaffold terminal colours
 
-Other repos I found that I would like to experiment with soon:
+I'm sure there are solutions to some of these, but they're low priority when we already have a working solution.
 
-- https://github.com/initred/nuxt3-tailwindcss3-starter-kit
-  - Nuxt3 and Tailwind loveliness
-  - _Issues_
-    - Couldn't get Nuxt to resolve node_modules from monorepo root
-- https://github.com/ycjcl868/monorepo
-  - PNMP + Rollup modularity
-  - _Issues_
-    - I need to spend some time with PNPM and Rollup first
+**#2 *pre-test-e2e* and *pre-dev* do not build the docker containers**
 
-## Adding additional vanilla Vue apps
+Because Skaffold does.
 
-### 1. Create Vue App
+## Packages/libraries
 
-TBC
+### Runtypes
 
-### 2. Add Vuetify (optional)
+Borrowed from [VincentJouanne](https://github.com/VincentJouanne), they use it to implement very neat encapsulated Value Objects.
 
-Currently Vue CLI doesn't seem to currently (2022.04.28) play well with monorepos, so you need to install from your app root and then do some fiddling about.
-
-**Note:** be sure to commit all changes prior to this so you can:
-
-- Reset if you don't like it
-- See what changes it makes
-
-```bash
-# CD into app root
-$ cd apps/my-app
-# Install Vuetify
-$ vue add vuetify
-```
-
-Have a look at the changes, and make sure you're happy. Then we need to make it more turborepo-ish:
-
-1. Remove node_modules dir from apps/my-app
-2. Copy any DevDependencies
-   - FROM @/my-app/package.json
-   - TO @/package.json
-   - Removing any duplicates if they exist
-3. npm install from root
-
-### 3. Add vitest (optional)
-
-Vitest has already been included as a dev-dependency at root, you'll just need to add the scripts to your app/package.json:
-
-```json
-{
-  "scripts": {
-    "test": "vitest",
-    "test:coverage": "vitest run --coverage"
-  }
-}
-```
+* [Runtypes](https://github.com/pelotom/runtypes)
