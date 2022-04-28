@@ -1,49 +1,33 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    <example-component
-      title="Example component"
-      active
-      :todos="todos"
-      :meta="meta"
-    ></example-component>
+  <q-page class="row q-pa-xl q-col-gutter-lg items-center">
+    <div class="col">
+      <q-img src="/img/psyduck.png" />
+    </div>
+    <div class="col">
+      <h1>{{ welcomeMessage }}</h1>
+      <div class="q-pa-md">
+        <p class="text-body1">
+          Do your friends out-do you when it comes to vague stats and unique
+          species? We've got your covered...
+        </p>
+      </div>
+
+      <div class="q-pa-md q-gutter-md">
+        <q-btn unelevated rounded color="primary" size="xl" label="Join us" />
+        <q-btn flat color="dark" size="md" label="Show me how it works" />
+      </div>
+    </div>
   </q-page>
 </template>
 
 <script lang="ts">
-import { Todo, Meta } from 'components/models';
-import ExampleComponent from 'components/ExampleComponent.vue';
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'IndexPage',
-  components: { ExampleComponent },
-  setup () {
-    const todos = ref<Todo[]>([
-      {
-        id: 1,
-        content: 'ct1'
-      },
-      {
-        id: 2,
-        content: 'ct2'
-      },
-      {
-        id: 3,
-        content: 'ct3'
-      },
-      {
-        id: 4,
-        content: 'ct4'
-      },
-      {
-        id: 5,
-        content: 'ct5'
-      }
-    ]);
-    const meta = ref<Meta>({
-      totalCount: 1200
-    });
-    return { todos, meta };
-  }
+  setup() {
+    const welcomeMessage = 'For those embarrassing Pokemon moments...';
+    return { welcomeMessage };
+  },
 });
 </script>
