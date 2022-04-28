@@ -1,33 +1,43 @@
 <template>
-  <q-page class="row q-pa-xl q-col-gutter-lg items-center">
-    <div class="col">
-      <q-img src="/img/psyduck.png" />
+  <q-page class="row q-pa-xl q-col-gutter-lg items-center justify-center">
+    <div class="col-xs-12 col-sm-6 col-md-6 text-center">
+      <q-img src="/img/psyduck.png" alt="An embarrassed Psyduck" />
     </div>
-    <div class="col">
-      <h1>{{ welcomeMessage }}</h1>
-      <div class="q-pa-md">
-        <p class="text-body1">
-          Do your friends out-do you when it comes to vague stats and unique
-          species? We've got your covered...
-        </p>
-      </div>
+    <div class="col-xs-12 col-md-6">
+      <!-- TODO: This needs to be center-ed when lt medium -->
+      <div class="text-center">
+        <!-- TODO: This needs to be smaller when smaller -->
+        <h1>{{ welcomeMessage }}</h1>
+        <div class="q-pa-md">
+          <p :class="classWelcome">
+            Do your friends out-do you when it comes to vague stats and unique
+            species? We've got your covered...
+          </p>
+        </div>
 
-      <div class="q-pa-md q-gutter-md">
-        <q-btn unelevated rounded color="primary" size="xl" label="Join us" />
-        <q-btn flat color="dark" size="md" label="Show me how it works" />
+        <div class="q-pa-md q-gutter-md">
+          <!-- TODO: These need to be standardised in an atomic component -->
+          <q-btn unelevated rounded color="primary" size="xl" label="Join us" />
+          <q-btn flat color="dark" size="md" label="Show me how it works" />
+        </div>
       </div>
     </div>
   </q-page>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
+import { useQuasar } from 'quasar';
 
 export default defineComponent({
   name: 'IndexPage',
   setup() {
+    const $q = useQuasar();
+    const classWelcome = computed(() => {
+      return $q.screen.sm ? 'text-body1 q-px-xl' : 'text-body1 q-px-sm';
+    });
     const welcomeMessage = 'For those embarrassing Pokemon moments...';
-    return { welcomeMessage };
+    return { welcomeMessage, classWelcome };
   },
 });
 </script>
