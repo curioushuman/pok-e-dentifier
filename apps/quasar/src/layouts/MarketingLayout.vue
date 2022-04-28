@@ -7,20 +7,7 @@
       height-hint="61.59"
     >
       <q-toolbar class="q-py-sm q-px-md">
-        <q-btn
-          round
-          dense
-          flat
-          :ripple="false"
-          size="19px"
-          color="white"
-          class="q-mr-sm"
-          no-caps
-        >
-          <q-avatar round size="28px">
-            <img src="/img/poke-logo.png" alt="Pok-E-Dentifier Logo" />
-          </q-avatar>
-        </q-btn>
+        <a-logo />
 
         <q-toolbar-title> Pok-E-Dentifier </q-toolbar-title>
 
@@ -82,7 +69,8 @@
 
 <script>
 import { ref } from 'vue';
-import { fabGithub } from '@quasar/extras/fontawesome-v6';
+
+import ALogo from 'components/atoms/ALogo.vue';
 
 const stringOptions = [
   'quasarframework/quasar',
@@ -90,7 +78,8 @@ const stringOptions = [
 ];
 
 export default {
-  name: 'MyLayout',
+  name: 'MarketingLayout',
+  components: { ALogo },
 
   setup() {
     const text = ref('');
@@ -134,8 +123,6 @@ export default {
     }
 
     return {
-      fabGithub,
-
       text,
       options,
       filteredOptions,
