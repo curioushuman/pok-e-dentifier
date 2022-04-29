@@ -1,5 +1,5 @@
 # ! This Dockerfile will only run successfully as part of a Kubernetes cluster
-# See git:rbc-k8s for helm charts, and skaffold.dev for dev setup
+# See git:poke-k8s for helm charts, and skaffold.dev for dev setup
 
 # ------
 # Build
@@ -10,30 +10,16 @@ FROM node:16-alpine AS build
 RUN apk add --no-cache libc6-compat
 
 # install python to support some dependencies
-# RUN apk add --no-cache --virtual .gyp python make g++
 RUN apk add --no-cache python3 make g++
 
 WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json to /usr/src/app
-# ! Currently Nx doesn't give us a lock file :(
-COPY ./dist/apps/api/package.json ./
+# ! Don't yet have a solution for the package-lock file
+COPY ./apps/api/package.json ./
 
-# We need to manually set the main value in the package.json
-# ! As it is currently set incorrectly within package.json
-RUN sed -i 's/main\.js/apps\/api\/main\.js/g' package.json
-
-# Install dependencies
+# Install ALL dependencies to /usr/src/app/node_modules
 RUN npm install
-
-# ! Nx doesn't include devDependencies
-# Manually install for now
-RUN npm install -D \
-    @nestjs/schematics @nestjs/testing @nrwl/cli @nrwl/jest \
-    @nrwl/nest @nrwl/node @nrwl/workspace @types/jest \
-    @types/node babel-jest jest jest-when nx \
-    run-script-webpack-plugin supertest ts-jest \
-    typescript webpack webpack-node-externals
 
 # ------
 # Build for dev
@@ -46,21 +32,9 @@ WORKDIR /usr/src/app
 COPY --from=build /usr/src/app ./
 
 # Grab the project/ts files
-# Nest/Jest will use them during dev/test stages
-COPY ./apps/api ./apps/api
-COPY ./libs ./libs
+# ! If we move to a shared UI lib this will need to change
+COPY ./apps/web ./
 
-COPY [ \
-  "./webpack-hmr.config.js", \
-  "./tsconfig.base.json", \
-  "./jest.preset.js", \
-  "./apps/api/entrypoint.sh", \
-  "./apps/api/nest-cli.json", \
-  "./apps/api/jest.config-e2e.js", \
-  "./" \
-  ]
-
-# entrypoint needs to be executable
 RUN chmod +x entrypoint.sh
 
 # ------
@@ -77,6 +51,8 @@ COPY --from=build-development /usr/src/app ./
 ARG NODE_ENV=development
 ENV NODE_ENV=${NODE_ENV}
 
+RUN npm install
+
 CMD [ "sh", "entrypoint.sh" ]
 
 # ------
@@ -89,32 +65,39 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /usr/src/app
 COPY --from=build-development /usr/src/app ./
 
+# We do our e2e tests in k8s
 COPY ./apps/api/tsconfig.spec-e2e.json ./tsconfig.spec.json
 
 ARG NODE_ENV=test
 ENV NODE_ENV=${NODE_ENV}
 
+RUN npm install
+
 CMD [ "sh", "entrypoint.sh" ]
 
 # ------
-# Production stage
+# Build for production
 # ------
-FROM node:16-alpine AS production
+FROM node:16-alpine AS build-production
 
 RUN apk add --no-cache libc6-compat
 
 WORKDIR /usr/src/app
-COPY --from=build-dev /usr/src/app/package.json ./package.json
-COPY --from=build-dev /usr/src/app/entrypoint.sh ./entrypoint.sh
+COPY --from=build /usr/src/app ./
 
-# Copy the files already built/cached by Nx
-COPY ./dist/apps/api ./dist/apps/api
-COPY ./dist/libs ./dist/libs
+# Grab the project/ts files for final build
+# ! As above we'll need to alter this later
+COPY ./apps/web ./
 
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
+RUN npm install
 
-# Install prod only dependencies
-RUN npm install --production
+# Build to ./dist
+RUN npm run build
 
-CMD [ "sh", "entrypoint.sh" ]
+# ------
+# Production stage
+# ------
+FROM nginx AS production
+
+WORKDIR /usr/src/app
+COPY --from=build-production /usr/src/app/dist/spa /usr/share/nginx/html
