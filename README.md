@@ -8,10 +8,37 @@ For those embarrassing pokemon moments..
 - Quasar
 - Nest.js
 - K8s
+- Skaffold
+
+## Status
+
+Not quite production ready, outstanding:
+
+- App
+  - Connection to API
+  - Auth
+  - Further tidying
+  - Testing
+- API
+  - Connection to Poke-API
+  - Auth
+- CI/CD
+  - More info available in [poke-k8s](https://github.com/curioushuman/poke-k8s) repo
+  - Linting pre-commit using Husky
+
+## What you can do
+
+### API
+
+- Run tests (see below)
+
+### Entire app
+
+Not yet... Grrrr.
 
 ## Important notes
 
-At this stage, we don't employ necessarily *all* of the benefits of Nx as a monorepo provider. This is mainly down to:
+At this stage, we don't employ *all* of the benefits of Nx as a monorepo provider. This is mainly down to:
 
 - K8s for service delivery
 - Inconsistent results for Vue (et al) within Nx
@@ -30,11 +57,21 @@ Things I would like to work on next:
 
 ## K8s
 
-Need the poke-k8s repo to be cloned and in the same directory as this one. Just as we work on them together, it is quicker to draw from local files rather than a chart museum.
+Need the poke-k8s repo to be cloned and in the same directory as this one. You'll also need to go through the local setup steps in that repo.
 
 **TODO**
 
 - Draw the k8s setup from repo museum
+
+## Software
+
+*Apologies:* this is directed towards those on MacOS.
+
+## skaffold cli
+
+```bash
+$ brew install skaffold
+```
 
 # API
 
@@ -102,6 +139,18 @@ This will spin up the k8s cluster, and start Nest with:
 - watch
 
 **Note:** you only have to run pre-dev if you've previously been running e2e tests.
+
+# App
+
+## Status
+
+A work in progress. The basics are in place, but the following still needs to be done:
+
+- Connection to API
+- Auth flows
+  - Register
+  - Login
+- Auth guard
 
 # Appendix
 
