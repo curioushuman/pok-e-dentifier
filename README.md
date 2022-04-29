@@ -24,6 +24,7 @@ Things I would like to work on next:
     - And potential productivity costs
   - When there is time I will play with this further
     - May require some faffing on the Quasar front
+- Shared repo for UI elements
 
 # Setup
 

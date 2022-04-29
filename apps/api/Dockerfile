@@ -1,5 +1,5 @@
 # ! This Dockerfile will only run successfully as part of a Kubernetes cluster
-# See git:rbc-k8s for helm charts, and skaffold.dev for dev setup
+# See git:poke-k8s for helm charts, and skaffold.dev for dev setup
 
 # ------
 # Build

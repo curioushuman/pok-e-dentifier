@@ -1,9 +1,9 @@
 ### Test for readiness
-GET http://rbc.dev/api/ping
+GET http://poke.dev/api/ping
 
 
 ### Users
-POST http://rbc.dev/api/users
+POST http://poke.dev/api/users
 
 
 ### PROD: Test for readiness
