@@ -15,6 +15,15 @@ deploy:
         image: curioushuman/poke-api
       imageStrategy:
         helm: {}
+    - name: poke-web
+      version: ~1.0.2
+      chartPath: ../poke-k8s/core/helm/poke-web
+      namespace: poke-dev
+      createNamespace: true
+      artifactOverrides:
+        image: curioushuman/poke-web
+      imageStrategy:
+        helm: {}
 build:
   local:
     push: false
@@ -29,4 +38,13 @@ build:
           - src: 'apps/api/src/**/*.ts'
             dest: '/usr/src/app/'
           - src: 'libs/shared/**/*.ts'
+            dest: '/usr/src/app/'
+    - image: curioushuman/poke-web
+      context: .
+      docker:
+        dockerfile: apps/web/Dockerfile
+        target: development
+      sync:
+        manual:
+          - src: 'apps/web/src/**/*.ts'
             dest: '/usr/src/app/'
