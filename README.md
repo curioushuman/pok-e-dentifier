@@ -25,19 +25,7 @@ Not quite production ready, outstanding:
 - CI/CD
   - More info available in [poke-k8s](https://github.com/curioushuman/poke-k8s) repo
 
-## What you can do
-
-### API
-
-- Run tests (see below)
-
-### Entire app
-
-Not yet... Grrrr.
-
 # Setup
-
-To get things running locally you'll need to
 
 ## Install K8s
 
@@ -50,7 +38,11 @@ To get things running locally you'll need to
 
 ### nx cli
 
-This is optional, but without it you'll need to replace any commands starting with:
+```bash
+$ npm i -g nx
+```
+
+**Note:** This is optional, but without it you'll need to replace any commands starting with:
 
 ```bash
 $ nx <do_a_thing>
@@ -62,17 +54,32 @@ With:
 $ npx nx <do_a_thing>
 ```
 
-To install:
-
-```bash
-$ npm i -g nx
-```
-
 ### skaffold cli
 
 ```bash
 $ brew install skaffold
 ```
+
+# Working locally
+
+Spin up the local k8s environment:
+
+```bash
+# From root
+$ skaffold dev
+```
+
+Then access web interface via:
+
+- [http://poke-web.dev](http://poke-web.dev)
+
+If you are presented with an HTTPS error, type `thisisunsafe` to resolve locally.
+
+To access API:
+
+- [http://poke-api.dev](http://poke-api.dev)
+
+You can run some basic manual tests via the `~/apps/api/requests.http` file so long as you [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension installed.
 
 # Testing
 
@@ -81,6 +88,13 @@ $ brew install skaffold
 TBC
 
 ## API (only)
+
+### Manual tests
+
+- Install [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
+- Open [~/apps/api/requests.http](apps/api/requests.http)
+- Use the available tests
+- OR add your own
 
 ### Unit tests
 
