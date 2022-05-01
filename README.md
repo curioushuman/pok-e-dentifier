@@ -24,7 +24,6 @@ Not quite production ready, outstanding:
   - Auth
 - CI/CD
   - More info available in [poke-k8s](https://github.com/curioushuman/poke-k8s) repo
-  - Linting pre-commit using Husky
 
 ## What you can do
 
