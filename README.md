@@ -35,46 +35,52 @@ Not quite production ready, outstanding:
 
 Not yet... Grrrr.
 
-## Important notes
-
-At this stage, we don't employ *all* of the benefits of Nx as a monorepo provider. This is mainly down to:
-
-- K8s for service delivery
-- Inconsistent results for Vue (et al) within Nx
-
-Things I would like to work on next:
-
-- Taking full advantage of Nx build and build caching
-  - Currently we build within the respective Dockerfiles
-    - Which means semi-duplicated package.json files
-    - And potential productivity costs
-  - When there is time I will play with this further
-    - May require some faffing on the Quasar front
-- Shared repo for UI elements
-
 # Setup
 
-## K8s
+To get things running locally you'll need to
 
-Need the poke-k8s repo to be cloned and in the same directory as this one. You'll also need to go through the local setup steps in that repo.
+## Install K8s
 
-**TODO**
-
-- Draw the k8s setup from repo museum
+- Clone the [poke-k8s repo](https://github.com/curioushuman/poke-k8s) to the same directory as this repo
+- Follow the (Simple) setup steps from that repo
 
 ## Software
 
 *Apologies:* this is directed towards those on MacOS.
 
-## skaffold cli
+### nx cli
+
+This is optional, but without it you'll need to replace any commands starting with:
+
+```bash
+$ nx <do_a_thing>
+```
+
+With:
+
+```bash
+$ npx nx <do_a_thing>
+```
+
+To install:
+
+```bash
+$ npm i -g nx
+```
+
+### skaffold cli
 
 ```bash
 $ brew install skaffold
 ```
 
-# API
+# Testing
 
-## Testing
+## All
+
+TBC
+
+## API (only)
 
 ### Unit tests
 
@@ -139,19 +145,28 @@ This will spin up the k8s cluster, and start Nest with:
 
 **Note:** you only have to run pre-dev if you've previously been running e2e tests.
 
-# App
+## App
 
-## Status
-
-A work in progress. The basics are in place, but the following still needs to be done:
-
-- Connection to API
-- Auth flows
-  - Register
-  - Login
-- Auth guard
+TBC
 
 # Appendix
+
+## Important notes
+
+At this stage, we don't employ *all* of the benefits of Nx as a monorepo provider. This is mainly down to:
+
+- K8s for service delivery
+- Inconsistent results for Vue (et al) within Nx
+
+Things I would like to work on next:
+
+- Taking full advantage of Nx build and build caching
+  - Currently we build within the respective Dockerfiles
+    - Which means semi-duplicated package.json files
+    - And potential productivity costs
+  - When there is time I will play with this further
+    - May require some faffing on the Quasar front
+- Shared repo for UI elements
 
 ## Inspiration
 

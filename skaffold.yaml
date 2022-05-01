@@ -19,7 +19,7 @@ deploy:
       version: ~1.0.2
       chartPath: ../poke-k8s/core/helm/poke-web
       namespace: poke-dev
-      createNamespace: true
+      # createNamespace: true
       artifactOverrides:
         image: curioushuman/poke-web
       imageStrategy:
