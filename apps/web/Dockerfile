@@ -51,6 +51,8 @@ COPY --from=build-development /usr/src/app ./
 ARG NODE_ENV=development
 ENV NODE_ENV=${NODE_ENV}
 
+# TODO - prevent the need for this extra install
+# Error 'quasar not found' via npm script
 RUN npm install
 
 CMD [ "sh", "entrypoint.sh" ]
@@ -71,7 +73,7 @@ COPY ./apps/api/tsconfig.spec-e2e.json ./tsconfig.spec.json
 ARG NODE_ENV=test
 ENV NODE_ENV=${NODE_ENV}
 
-RUN npm install
+# RUN npm install
 
 CMD [ "sh", "entrypoint.sh" ]
 
