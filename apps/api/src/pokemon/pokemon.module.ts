@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 
 import { LoggableModule } from '@curioushuman/loggable';
 
-import { PokemonController } from './infra/Pokemon.controller';
+import { PokemonController } from './infra/pokemon.controller';
 
 @Module({
   imports: [LoggableModule],
