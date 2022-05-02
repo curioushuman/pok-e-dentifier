@@ -64,7 +64,7 @@
         "passWithNoTests": true
       }
     },
-    "pre-test-e2e": {
+    "pre-test": {
       "executor": "@nrwl/workspace:run-commands",
       "outputs": [],
       "options": {
