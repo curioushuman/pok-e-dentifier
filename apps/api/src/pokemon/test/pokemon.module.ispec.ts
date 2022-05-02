@@ -3,6 +3,8 @@ import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 
 import { Bootstrap } from '../../bootstrap/bootstrap';
+import { Pokemon } from '../domain/entities/pokemon';
+import { PokemonBuilder } from './data-builders/pokemon.builder';
 import { PokemonModule } from './fake.pokemon.module';
 
 /**
@@ -32,10 +34,19 @@ describe('[Integration] PokemonModule', () => {
   });
 
   describe('When a Pokemon is requested', () => {
-    test('Then it should return a 200 response status', async () => {
-      const response = await request(httpServer).get('/api/pokemon');
+    let requestTest: request.Test;
+    let pokemon: Pokemon;
 
-      expect(response.status).toBe(200);
+    beforeAll(() => {
+      pokemon = PokemonBuilder().withDash().build();
+      requestTest = request(httpServer).get(`/api/pokemon/${pokemon.slug}`);
+    });
+    test('Then it should return a 200 response status', async () => {
+      requestTest.expect(200).expect(pokemon);
+    });
+
+    test('And the correct Pokemon', async () => {
+      requestTest.expect(pokemon);
     });
   });
 });

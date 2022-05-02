@@ -4,8 +4,7 @@ import { GetPokemonQuery, GetPokemonHandler } from '../get-pokemon.query';
 import { PokemonRepository } from '../../../adapter/ports/pokemon.repository';
 import { FakePokemonRepository } from '../../../adapter/implementations/fake/fake.pokemon.repository';
 import { executeTask } from '../../../../utils/execute-task';
-import { Pokemon } from '../../../domain/entities/pokemon';
-import { Slug } from '../../../domain/value-objects/slug';
+import { PokemonBuilder } from '../../../test/data-builders/pokemon.builder';
 
 let repository: FakePokemonRepository;
 
@@ -28,11 +27,10 @@ describe('[Unit] Get Pokemon Query', () => {
 
   describe('When ALL input is valid', () => {
     test('then it should return a pokemon', async () => {
-      const slug = 'jigglypuff' as Slug;
-      const result = await handler.execute(new GetPokemonQuery(slug));
-      const pokemon = await executeTask(repository.all());
+      const pokemon = PokemonBuilder().withDash().build();
+      const result = await handler.execute(new GetPokemonQuery(pokemon.slug));
 
-      expect(result).toBe(pokemon[0]);
+      expect(result).toStrictEqual(pokemon);
     });
   });
 });
