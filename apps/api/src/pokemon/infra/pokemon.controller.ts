@@ -4,6 +4,7 @@ import { QueryBus } from '@nestjs/cqrs';
 import { LoggableLogger } from '@curioushuman/loggable';
 
 import { GetPokemonQuery } from '../application/queries/get-pokemon.query';
+import { Slug } from '../domain/value-objects/slug';
 
 @Controller('pokemon')
 export class PokemonController {
@@ -17,6 +18,7 @@ export class PokemonController {
   @Get()
   @HttpCode(200)
   async getPokemon(): Promise<string> {
-    return this.queryBus.execute(new GetPokemonQuery('pikachu'));
+    const slug = 'pikachu' as Slug;
+    return this.queryBus.execute(new GetPokemonQuery(slug));
   }
 }

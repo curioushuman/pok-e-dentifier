@@ -3,8 +3,7 @@ import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 
 import { Bootstrap } from '../../bootstrap/bootstrap';
-// import { PokemonModule } from './fake.pokemon.module';
-import { PokemonModule } from '../pokemon.module';
+import { PokemonModule } from './fake.pokemon.module';
 
 /**
  * For local integration tests we just want to make sure
