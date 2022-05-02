@@ -1,8 +1,11 @@
-import { Name } from '../value-objects/name';
 import { Record, Static } from 'runtypes';
 
+import { Name } from '../value-objects/name';
+import { Slug } from '../value-objects/slug';
+
 export const Pokemon = Record({
-  email: Name,
+  name: Name,
+  slug: Slug,
 });
 
 export type Pokemon = Static<typeof Pokemon>;
