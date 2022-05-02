@@ -10,7 +10,7 @@ import { IdentityAndAccessModule } from './fake.identity-and-access.module';
  * - endpoints behave how they should
  */
 
-describe('[E2E] IdentityAndAccessModule', () => {
+describe('[Integration] IdentityAndAccessModule', () => {
   let app: INestApplication;
   // disabling no-explicit-any for testing purposes
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
