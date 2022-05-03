@@ -42,7 +42,7 @@ describe('[Integration] PokemonModule', () => {
       requestTest = request(httpServer).get(`/api/pokemon/${pokemon.slug}`);
     });
     test('Then it should return a 200 response status', async () => {
-      requestTest.expect(200).expect(pokemon);
+      requestTest.expect(200);
     });
 
     test('And the correct Pokemon', async () => {
