@@ -73,7 +73,7 @@ COPY ./apps/api/tsconfig.spec-e2e.json ./tsconfig.spec.json
 ARG NODE_ENV=test
 ENV NODE_ENV=${NODE_ENV}
 
-# RUN npm install
+RUN npm install
 
 CMD [ "sh", "entrypoint.sh" ]
 

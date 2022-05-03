@@ -7,6 +7,8 @@ import { Bootstrap } from '../../bootstrap/bootstrap';
 import { AppModule } from '../../app/app.module';
 import { MongoDbService } from '../../infra/database/mongo-db/mongo-db.service';
 
+jest.setTimeout(5000);
+
 describe('[E2E] IdentityAndAccessModule', () => {
   let app: INestApplication;
   let connection: Connection;
@@ -24,9 +26,6 @@ describe('[E2E] IdentityAndAccessModule', () => {
     await app.init();
     httpServer = app.getHttpServer();
     connection = moduleRef.get<MongoDbService>(MongoDbService).getConnection();
-  });
-
-  beforeAll(async () => {
     await connection.collection('mongodbusers').deleteMany({});
   });
 

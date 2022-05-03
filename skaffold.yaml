@@ -7,7 +7,7 @@ deploy:
     releases:
     # TODO create chart museum and draw from there
     - name: poke-api
-      version: ~1.0.2
+      version: ~0.0.3
       chartPath: ../poke-k8s/core/helm/poke-api
       namespace: poke-dev
       createNamespace: true
@@ -16,7 +16,7 @@ deploy:
       imageStrategy:
         helm: {}
     - name: poke-web
-      version: ~1.0.2
+      version: ~0.0.1
       chartPath: ../poke-k8s/core/helm/poke-web
       namespace: poke-dev
       # createNamespace: true
@@ -32,7 +32,7 @@ build:
       context: .
       docker:
         dockerfile: apps/api/Dockerfile
-        target: development
+        target: test
       sync:
         manual:
           - src: 'apps/api/src/**/*.ts'
@@ -43,7 +43,7 @@ build:
       context: .
       docker:
         dockerfile: apps/web/Dockerfile
-        target: development
+        target: test
       sync:
         manual:
           - src: 'apps/web/src/**/*.ts'
