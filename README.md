@@ -79,7 +79,7 @@ To access API:
 
 - [http://poke-api.dev](http://poke-api.dev)
 
-You can run some basic manual tests via the `~/apps/api/requests.http` file so long as you [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension installed.
+You can run some basic manual tests via the `~/apps/api/requests.http` file so long as you have the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension installed.
 
 # Testing
 
@@ -134,7 +134,7 @@ Handled **INSIDE of k8s** via Jest, supported by Nx, enabled via Skaffold.
 
 ```bash
 # Tells skaffold.yaml to use the 'test' stage of Docker container
-$ nx run api:pre-test-e2e
+$ nx run api:pre-test
 # Then tests are automatically run and watched within k8s
 $ skaffold dev
 ```
@@ -165,7 +165,23 @@ TBC
 
 # Appendix
 
-## Important notes
+## Inspiration
+
+### Domain Driven Development (DDD)
+
+Khalil Stemmler and his fantastic book + supporting repo:
+
+- https://solidbook.io/
+- https://github.com/stemmlerjs/ddd-forum
+
+### API
+
+* [VincentJouanne/nest-clean-architecture](https://github.com/VincentJouanne/nest-clean-architecture)
+  * Very tidy, very advanced combination of Nest.js & DDD
+
+## Important notes / decisions
+
+### Nx/monorepo
 
 At this stage, we don't employ *all* of the benefits of Nx as a monorepo provider. This is mainly down to:
 
@@ -182,15 +198,6 @@ Things I would like to work on next:
     - May require some faffing on the Quasar front
 - Shared repo for UI elements
 
-## Inspiration
-
-### API
-
-* [VincentJouanne/nest-clean-architecture](https://github.com/VincentJouanne/nest-clean-architecture)
-  * Very tidy, very advanced combination of Nest.js & DDD
-
-## Important notes / decisions
-
 ### Testing
 
 **#1 We have specifically not included skaffold within Nx**
@@ -205,6 +212,18 @@ I'm sure there are solutions to some of these, but they're low priority when we 
 
 Because Skaffold does.
 
+### Leaner Value Objects (VO) & Domain Objects (DO)
+
+I love the purity of Stemmler's approach to VO, Entities, AggregateRoots but as we enfold his pure DDD into a Nest.js context; where a lot of DDD/CQRS things are already handled; there was always going to be a need to refine/remove aspects. The [RunTypes](https://github.com/pelotom/runtypes) library (introduced by Vincent) is fantastic, at it's core it contributes runtime type checking on top of compile time checking, as well as:
+
+- Data validation
+- Value constraint definition / validation
+- Type guarding
+- Object matching
+- And much more...
+
+Links and articles [below](#runtypes) in the [packages](#packageslibraries) section.
+
 ## Packages/libraries
 
 ### Runtypes
@@ -212,3 +231,4 @@ Because Skaffold does.
 Borrowed from [VincentJouanne](https://github.com/VincentJouanne), they use it to implement very neat encapsulated Value Objects.
 
 * [Runtypes](https://github.com/pelotom/runtypes)
+* [A good article about Runtypes](https://blog.logrocket.com/using-typescript-to-stop-unexpected-data-from-breaking-your-app/)
