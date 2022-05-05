@@ -7,7 +7,7 @@ import { AppModule } from '../../app/app.module';
 import { PokemonBuilder } from './data-builders/pokemon.builder';
 import { Pokemon } from '../domain/entities/pokemon';
 
-jest.setTimeout(5000);
+jest.setTimeout(10000);
 
 describe('[E2E] PokemonModule', () => {
   let app: INestApplication;
@@ -30,20 +30,75 @@ describe('[E2E] PokemonModule', () => {
     await app.close();
   });
 
-  describe('When a pokemon is requested', () => {
+  describe('Given a specific Pokemon is being requested', () => {
     let response: request.Response;
     let pokemon: Pokemon;
 
-    beforeAll(async () => {
-      pokemon = PokemonBuilder().withDash().build();
-      response = await request(httpServer).get(`/api/pokemon/${pokemon.slug}`);
-    });
-    test('Then it should return a 200 response status', () => {
-      expect(response.status).toBe(200);
+    describe('When that Pokemon exists, and the request is valid', () => {
+      describe('Jigglypuff definitely exists', () => {
+        beforeAll(async () => {
+          pokemon = PokemonBuilder().build();
+          response = await request(httpServer).get(
+            `/api/pokemon/${pokemon.slug}`
+          );
+        });
+        test('Then response status should be 200', () => {
+          expect(response.status).toBe(200);
+        });
+
+        test('And the Jigglypuff is returned', () => {
+          expect(response.body.name).toEqual(pokemon.slug);
+        });
+
+        test.todo('And the request/response is logged');
+      });
+      describe("Farfetch'd exists and normally includes apostrophe", () => {
+        beforeAll(async () => {
+          pokemon = PokemonBuilder().withApostrophe().build();
+          response = await request(httpServer).get(
+            `/api/pokemon/${pokemon.slug}`
+          );
+        });
+        test('Then response status should be 200', () => {
+          expect(response.status).toBe(200);
+        });
+      });
+      describe('Hakamo-o exists and includes dash', () => {
+        beforeAll(async () => {
+          pokemon = PokemonBuilder().withDash().build();
+          response = await request(httpServer).get(
+            `/api/pokemon/${pokemon.slug}`
+          );
+        });
+        test('Then response status should be 200', () => {
+          expect(response.status).toBe(200);
+        });
+      });
     });
 
-    test('And the correct Pokemon', () => {
-      expect(response.body.name).toEqual(pokemon.slug);
-    });
+    // describe('When that Pokemon does not exist e.g. Furfligarbabard', () => {
+    //   test.todo('Then response status should be 404 (not found)');
+
+    //   test.todo('And the request/response is logged');
+    // });
+
+    // describe('When the request is invalid', () => {
+    //   describe("Farfetch'd with the apostrophe included", () => {
+    //     test.todo('Then response status should be 400 (bad request)');
+    //     test.todo('And the request/response is logged');
+    //   });
+    //   describe('Any other punctuation', () => {
+    //     test.todo('Then response status should be 400 (bad request)');
+    //     test.todo('And the request/response is logged');
+    //   });
+    // });
+
+    // describe('When something unforeseen goes wrong', () => {
+    //   describe('When something unforeseen goes wrong', () => {
+    //     test.todo('Then response status should be 500 (internal server error)');
+    //     test.todo('The internal error is logged');
+    //     test.todo('And the request/response is logged');
+    //   });
+    // });
   });
 });

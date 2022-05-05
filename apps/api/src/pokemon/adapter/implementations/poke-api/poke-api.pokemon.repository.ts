@@ -6,6 +6,8 @@ import { TaskEither, tryCatch } from 'fp-ts/lib/TaskEither';
 import { Pokemon } from '../../../domain/entities/pokemon';
 import type { Slug } from '../../../domain/value-objects/slug';
 import { PokemonRepository } from '../../ports/pokemon.repository';
+import { PokeApiPokemonDto } from './poke-api.pokemon.dto';
+import { PokeApiPokemonMapper } from './poke-api.pokemon.mapper';
 
 @Injectable()
 export class PokeApiPokemonRepository implements PokemonRepository {
@@ -13,21 +15,21 @@ export class PokeApiPokemonRepository implements PokemonRepository {
 
   constructor(private httpService: HttpService) {}
 
-  findOne = (slug: Slug): TaskEither<Error, Pokemon> => {
-    return tryCatch(
-      async () => {
-        const pokemonRequest$ = this.httpService.get(
-          `https://pokeapi.co/api/v2/pokemon/${slug}`
-        );
-
-        // let pokemon: Pokemon;
-        const response = await firstValueFrom(pokemonRequest$);
-
-        return response.data;
-      },
-      (reason: unknown) => new InternalServerErrorException(reason)
+  public async findOne(slug: Slug): Promise<Pokemon> {
+    const pokemonRequest$ = this.httpService.get(
+      `https://pokeapi.co/api/v2/pokemon/${slug}`
     );
-  };
+
+    const response = await firstValueFrom(pokemonRequest$);
+    if (response.status !== 200) {
+      // TODO: grab error message from response
+      // TODO: log error
+      throw new InternalServerErrorException('balls');
+    }
+
+    const pokeApiPokemonDto = PokeApiPokemonDto.check(response.data);
+    return PokeApiPokemonMapper.toDomain(pokeApiPokemonDto);
+  }
 
   all = (): TaskEither<Error, Pokemon[]> => {
     return tryCatch(

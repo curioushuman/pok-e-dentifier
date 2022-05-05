@@ -14,8 +14,8 @@ export const PokemonBuilder = () => {
   };
 
   return {
-    withPunctuation() {
-      overrides.name = 'farfetched';
+    withApostrophe() {
+      overrides.name = 'farfetchd';
       overrides.slug = overrides.name;
       return this;
     },

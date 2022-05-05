@@ -1,4 +1,5 @@
 import { QueryHandler, IQueryHandler, IQuery } from '@nestjs/cqrs';
+import { tryCatch } from 'fp-ts/lib/TaskEither';
 
 import type { Pokemon } from '../../domain/entities/pokemon';
 import { PokemonRepository } from '../../adapter/ports/pokemon.repository';
@@ -15,6 +16,12 @@ export class GetPokemonHandler implements IQueryHandler {
 
   async execute(query: GetPokemonQuery): Promise<Pokemon> {
     const { slug } = query;
-    return await executeTask(this.pokemonRepository.findOne(slug));
+    const findOne = tryCatch(
+      async () => {
+        return await this.pokemonRepository.findOne(slug);
+      },
+      (reason: unknown) => reason as Error
+    );
+    return executeTask(findOne);
   }
 }
