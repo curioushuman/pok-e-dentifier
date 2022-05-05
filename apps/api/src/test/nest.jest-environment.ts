@@ -5,7 +5,7 @@ import NodeEnvironment from 'jest-environment-node';
 
 import { Bootstrap } from '../bootstrap/bootstrap';
 import { AppModule } from '../app/app.module';
-import { MongoDbService } from '../infra/database/mongo-db/mongo-db.service';
+import { MongoDbService } from '../shared/infra/database/mongo-db/mongo-db.service';
 
 class NestEnvironment extends NodeEnvironment {
   private app: INestApplication;

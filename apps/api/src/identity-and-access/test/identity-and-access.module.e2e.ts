@@ -5,7 +5,7 @@ import { Connection } from 'mongoose';
 
 import { Bootstrap } from '../../bootstrap/bootstrap';
 import { AppModule } from '../../app/app.module';
-import { MongoDbService } from '../../infra/database/mongo-db/mongo-db.service';
+import { MongoDbService } from '../../shared/infra/database/mongo-db/mongo-db.service';
 
 jest.setTimeout(5000);
 

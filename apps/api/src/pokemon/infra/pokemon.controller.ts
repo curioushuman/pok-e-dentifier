@@ -7,7 +7,7 @@ import { LoggableLogger } from '@curioushuman/loggable';
 import { GetPokemonQuery } from '../application/queries/get-pokemon.query';
 import type { Slug } from '../domain/value-objects/slug';
 import { Pokemon } from '../domain/entities/pokemon';
-import { executeTask } from '../../utils/execute-task';
+import { executeTask } from '../../shared/utils/execute-task';
 
 @Controller('pokemon')
 export class PokemonController {

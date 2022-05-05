@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { GetPokemonQuery, GetPokemonHandler } from '../get-pokemon.query';
 import { PokemonRepository } from '../../../adapter/ports/pokemon.repository';
 import { FakePokemonRepository } from '../../../adapter/implementations/fake/fake.pokemon.repository';
-import { executeTask } from '../../../../utils/execute-task';
+import { executeTask } from '../../../../shared/utils/execute-task';
 import { PokemonBuilder } from '../../../test/data-builders/pokemon.builder';
 
 let repository: FakePokemonRepository;

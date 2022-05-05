@@ -3,7 +3,7 @@ import { tryCatch } from 'fp-ts/lib/TaskEither';
 
 import type { Pokemon } from '../../domain/entities/pokemon';
 import { PokemonRepository } from '../../adapter/ports/pokemon.repository';
-import { executeTask } from '../../../utils/execute-task';
+import { executeTask } from '../../../shared/utils/execute-task';
 import { Slug } from '../../domain/value-objects/slug';
 
 export class GetPokemonQuery implements IQuery {

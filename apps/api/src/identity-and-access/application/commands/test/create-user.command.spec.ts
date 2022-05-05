@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CreateUserCommand, CreateUserHandler } from '../create-user.command';
 import { UserRepository } from '../../../adapter/ports/user.repository';
 import { FakeUserRepository } from '../../../adapter/implementations/fake/fake.user.repository';
-import { executeTask } from '../../../../utils/execute-task';
+import { executeTask } from '../../../../shared/utils/execute-task';
 
 let repository: FakeUserRepository;
 
