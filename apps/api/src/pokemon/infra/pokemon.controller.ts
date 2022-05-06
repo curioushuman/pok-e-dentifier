@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { BadRequestException, Controller, Get, Param } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { tryCatch } from 'fp-ts/lib/TaskEither';
 
@@ -10,6 +10,7 @@ import { GetPokemonRequestDto } from '../application/queries/get-pokemon/get-pok
 import type { GetPokemonRequestDtoKeys } from '../application/queries/get-pokemon/get-pokemon.request.dto';
 import { GetPokemonMapper } from '../application/queries/get-pokemon/get-pokemon.mapper';
 import { PokemonResponseDto } from '../application/dto/pokemon.response.dto';
+import { ValidationError } from 'runtypes';
 
 @Controller('pokemon')
 export class PokemonController {
@@ -33,7 +34,12 @@ export class PokemonController {
         const query = new GetPokemonQuery(getPokemonQueryDto);
         return await this.queryBus.execute<GetPokemonQuery>(query);
       },
-      (error: Error) => error as Error
+      (error: Error) => {
+        if (error instanceof ValidationError) {
+          return new BadRequestException(error.toString());
+        }
+        return error;
+      }
     );
 
     return await executeTask(getOneQuery);
