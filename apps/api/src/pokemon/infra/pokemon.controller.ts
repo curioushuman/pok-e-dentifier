@@ -25,6 +25,7 @@ export class PokemonController {
 
   /**
    * TODO: Refactor to make simpler
+   * - could use the serialize decorator approach
    */
   @Get(':slug')
   async getOne(

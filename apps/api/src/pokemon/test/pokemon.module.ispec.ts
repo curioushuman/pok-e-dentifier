@@ -10,6 +10,14 @@ import { PokemonModule } from './fake.pokemon.module';
 /**
  * For local integration tests we just want to make sure
  * - endpoints behave how they should
+ *
+ * We ignore some of the additional elements such as:
+ * - authentication/authorisation/access
+ *
+ * We use mocks/fakes to focus on the subject under test (SUT)
+ *
+ * TODO
+ * - mimic e2e tests
  */
 
 describe('[Integration] PokemonModule', () => {

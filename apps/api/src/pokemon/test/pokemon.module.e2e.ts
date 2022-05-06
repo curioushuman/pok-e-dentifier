@@ -8,6 +8,12 @@ import { PokemonBuilder } from './data-builders/pokemon.builder';
 import { GetPokemonRequestDtoBuilder } from './data-builders/pokemon-request.builder';
 import { Pokemon } from '../domain/entities/pokemon';
 
+/**
+ * E2E testing might look similar to more localised integration tests
+ * However it should also include aspects such as:
+ * - authentication/authorisation/access
+ */
+
 jest.setTimeout(10000);
 
 describe('[E2E] PokemonModule', () => {
