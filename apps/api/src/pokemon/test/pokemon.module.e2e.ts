@@ -5,6 +5,7 @@ import * as request from 'supertest';
 import { Bootstrap } from '../../bootstrap/bootstrap';
 import { AppModule } from '../../app/app.module';
 import { PokemonBuilder } from './data-builders/pokemon.builder';
+import { GetPokemonRequestDtoBuilder } from './data-builders/pokemon-request.builder';
 import { Pokemon } from '../domain/entities/pokemon';
 
 jest.setTimeout(10000);
@@ -67,10 +68,8 @@ describe('[E2E] PokemonModule', () => {
 
     describe('When that Pokemon does not exist e.g. Furfligarbabard', () => {
       beforeAll(async () => {
-        pokemon = PokemonBuilder().doesntExist().build();
-        response = await request(httpServer).get(
-          `/api/pokemon/${pokemon.slug}`
-        );
+        const dto = GetPokemonRequestDtoBuilder().doesntExist().build();
+        response = await request(httpServer).get(`/api/pokemon/${dto.slug}`);
       });
       test('Then response status should be 404 (not found)', () => {
         expect(response.status).toBe(404);
@@ -79,27 +78,21 @@ describe('[E2E] PokemonModule', () => {
       test.todo('And the request/response is logged');
     });
 
-    // describe('When that Pokemon exists, but the request is invalid', () => {
-    //   describe("Farfetch'd, but they forgot to remove the apostrophe", () => {
-    //     beforeAll(async () => {
-    //       pokemon = PokemonBuilder().doesntExist().build();
-    //       response = await request(httpServer).get(
-    //         `/api/pokemon/${pokemon.slug}`
-    //       );
-    //     });
-    //     test('Then response status should STILL BE 200 (as we tidy the slug for them)', () => {
-    //       expect(response.status).toBe(200);
-    //     });
-    //     test.todo('And the request/response is logged');
-    //   });
-    // });
-
-    // describe('When something unforeseen goes wrong', () => {
-    //   describe('When something unforeseen goes wrong', () => {
-    //     test.todo('Then response status should be 500 (internal server error)');
-    //     test.todo('The internal error is logged');
-    //     test.todo('And the request/response is logged');
-    //   });
-    // });
+    describe('When that Pokemon exists, but the request is invalid', () => {
+      describe("Farfetch'd, but they forgot to remove the apostrophe", () => {
+        beforeAll(async () => {
+          pokemon = PokemonBuilder().withApostrophe().build();
+          const dto = GetPokemonRequestDtoBuilder().withApostrophe().build();
+          response = await request(httpServer).get(`/api/pokemon/${dto.slug}`);
+        });
+        test('Then response status should STILL BE 200 (as we tidy the slug for them)', () => {
+          expect(response.status).toBe(200);
+        });
+        test("And Farfetch'd is returned", () => {
+          expect(response.body.name).toEqual(pokemon.slug);
+        });
+        test.todo('And the request/response is logged');
+      });
+    });
   });
 });

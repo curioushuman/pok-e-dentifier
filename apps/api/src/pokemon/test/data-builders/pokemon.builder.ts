@@ -32,12 +32,6 @@ export const PokemonBuilder = () => {
       return this;
     },
 
-    doesntExist() {
-      overrides.name = 'furfligarbabard';
-      overrides.slug = overrides.name;
-      return this;
-    },
-
     build(): Pokemon {
       return Pokemon.check({
         ...defaultProperties,
