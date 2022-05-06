@@ -5,6 +5,14 @@ import { PokemonRepository } from '../../../../adapter/ports/pokemon.repository'
 import { FakePokemonRepository } from '../../../../adapter/implementations/fake/fake.pokemon.repository';
 import { PokemonBuilder } from '../../../../test/data-builders/pokemon.builder';
 
+/**
+ * Use Case tests
+ *
+ * Notes
+ * - it is here, you might test other things that occur _around_ each query or command
+ * - use mocks/spies to focus just on the subject under test (SUT)
+ */
+
 describe('[Unit] Get Pokemon Query', () => {
   let handler: GetPokemonHandler;
 
@@ -31,6 +39,24 @@ describe('[Unit] Get Pokemon Query', () => {
       );
 
       expect(result).toStrictEqual(pokemon);
+    });
+  });
+
+  describe('When input is INVALID', () => {
+    test('Then it should throw 500 error', async () => {
+      try {
+        const getPokemonQueryDto = {
+          slug: '',
+        };
+        // Turning off type checking so we make sure we test what would happen
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const getPokemonQuery = new GetPokemonQuery(getPokemonQueryDto);
+        await handler.execute(getPokemonQuery);
+      } catch (err) {
+        expect(err).toBeDefined();
+        expect(err.status).toBe(500);
+      }
     });
   });
 });
