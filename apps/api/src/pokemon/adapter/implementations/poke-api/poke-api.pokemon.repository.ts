@@ -1,10 +1,8 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
-import { TaskEither, tryCatch } from 'fp-ts/lib/TaskEither';
 
 import { Pokemon } from '../../../domain/entities/pokemon';
-import type { Slug } from '../../../domain/value-objects/slug';
 import { PokemonRepository } from '../../ports/pokemon.repository';
 import { PokeApiPokemonDto } from './poke-api.pokemon.dto';
 import { PokeApiPokemonMapper } from './poke-api.pokemon.mapper';
@@ -15,7 +13,10 @@ export class PokeApiPokemonRepository implements PokemonRepository {
 
   constructor(private httpService: HttpService) {}
 
-  public async findOne(slug: Slug): Promise<Pokemon> {
+  /**
+   * @param slug As string; as all specific validation already handled
+   */
+  public async findOne(slug: string): Promise<Pokemon> {
     const pokemonRequest$ = this.httpService.get(
       `https://pokeapi.co/api/v2/pokemon/${slug}`
     );
@@ -30,13 +31,4 @@ export class PokeApiPokemonRepository implements PokemonRepository {
     const pokeApiPokemonDto = PokeApiPokemonDto.check(response.data);
     return PokeApiPokemonMapper.toDomain(pokeApiPokemonDto);
   }
-
-  all = (): TaskEither<Error, Pokemon[]> => {
-    return tryCatch(
-      async () => {
-        return this.pokemons;
-      },
-      (reason: unknown) => new InternalServerErrorException(reason)
-    );
-  };
 }

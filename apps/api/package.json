@@ -37,6 +37,7 @@
     "regenerator-runtime": "0.13.7",
     "runtypes": "^6.5.1",
     "rxjs": "^7.5.5",
+    "slug": "^5.3.0",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
@@ -54,6 +55,7 @@
     "@nrwl/workspace": "13.10.1",
     "@types/jest": "27.0.2",
     "@types/node": "16.11.7",
+    "@types/slug": "^5.0.3",
     "@typescript-eslint/eslint-plugin": "~5.18.0",
     "@typescript-eslint/parser": "~5.18.0",
     "babel-jest": "27.2.3",

@@ -1,7 +1,5 @@
-/**
- * Heavily inspired by: https://github.com/VincentJouanne/nest-clean-architecture
- */
 import { Static, String } from 'runtypes';
+import * as slug from 'slug';
 
 /**
  * Looking at the list of names the following rules seem to apply
@@ -11,7 +9,21 @@ import { Static, String } from 'runtypes';
  *
  * Uncertain about
  * - spaces, I couldn't find one with a space
+ *
+ * Heavily inspired by: https://github.com/VincentJouanne/nest-clean-architecture
+ *
+ * TODO: should this be more OO? e.g. createSlug
  */
+
+slug.defaults.mode = 'pretty';
+slug.defaults.modes['pretty'] = {
+  replacement: '-', // replace spaces with replacement
+  symbols: true, // replace unicode symbols or not
+  lower: true, // result in lower case
+  charmap: slug.charmap, // replace special characters
+  multicharmap: slug.multicharmap, // replace multi-characters
+};
+
 export const SlugRegex = /^[a-z-]+$/;
 
 export const Slug = String.withBrand('Slug').withConstraint(
@@ -19,3 +31,7 @@ export const Slug = String.withBrand('Slug').withConstraint(
 );
 
 export type Slug = Static<typeof Slug>;
+
+export const createSlug = (text: string): Slug => {
+  return Slug.check(slug(text));
+};

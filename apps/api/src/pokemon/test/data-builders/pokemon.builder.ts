@@ -5,15 +5,21 @@ import { Pokemon } from '../../domain/entities/pokemon';
  */
 export const PokemonBuilder = () => {
   const defaultProperties = {
-    name: 'jigglypuff',
-    slug: 'jigglypuff',
+    name: 'pikachu',
+    slug: 'pikachu',
   };
   const overrides = {
-    name: 'jigglypuff',
-    slug: 'jigglypuff',
+    name: 'pikachu',
+    slug: 'pikachu',
   };
 
   return {
+    withAssumedSpace() {
+      overrides.name = 'jigglypuff';
+      overrides.slug = overrides.name;
+      return this;
+    },
+
     withApostrophe() {
       overrides.name = 'farfetchd';
       overrides.slug = overrides.name;
@@ -22,6 +28,12 @@ export const PokemonBuilder = () => {
 
     withDash() {
       overrides.name = 'hakamo-o';
+      overrides.slug = overrides.name;
+      return this;
+    },
+
+    doesntExist() {
+      overrides.name = 'furfligarbabard';
       overrides.slug = overrides.name;
       return this;
     },
