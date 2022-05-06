@@ -65,19 +65,19 @@ describe('[E2E] PokemonModule', () => {
       });
     });
 
-    // describe('When that Pokemon does not exist e.g. Furfligarbabard', () => {
-    //   beforeAll(async () => {
-    //     pokemon = PokemonBuilder().doesntExist().build();
-    //     response = await request(httpServer).get(
-    //       `/api/pokemon/${pokemon.slug}`
-    //     );
-    //   });
-    //   test('Then response status should be 404 (not found)', () => {
-    //     expect(response.status).toBe(404);
-    //   });
+    describe('When that Pokemon does not exist e.g. Furfligarbabard', () => {
+      beforeAll(async () => {
+        pokemon = PokemonBuilder().doesntExist().build();
+        response = await request(httpServer).get(
+          `/api/pokemon/${pokemon.slug}`
+        );
+      });
+      test('Then response status should be 404 (not found)', () => {
+        expect(response.status).toBe(404);
+      });
 
-    //   test.todo('And the request/response is logged');
-    // });
+      test.todo('And the request/response is logged');
+    });
 
     // describe('When that Pokemon exists, but the request is invalid', () => {
     //   describe("Farfetch'd, but they forgot to remove the apostrophe", () => {

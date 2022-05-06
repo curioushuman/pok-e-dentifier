@@ -1,6 +1,6 @@
 import { QueryHandler, IQueryHandler, IQuery } from '@nestjs/cqrs';
 import { pipe } from 'fp-ts/lib/function';
-import { map, tryCatch } from 'fp-ts/lib/TaskEither';
+import { chain, right, tryCatch } from 'fp-ts/lib/TaskEither';
 
 import { PokemonRepository } from '../../../adapter/ports/pokemon.repository';
 import { executeTask } from '../../../../shared/utils/execute-task';
@@ -22,15 +22,18 @@ export class GetPokemonHandler implements IQueryHandler {
     // TODO: it is here you _might_ interpret different
     // inputs in the query DTO e.g. slug vs id
     const { slug } = getPokemonQueryDto;
-    const findOne = pipe(
-      tryCatch(
-        async () => {
-          return await this.pokemonRepository.findOne(slug);
-        },
-        (reason: unknown) => reason as Error
-      ),
-      map((pokemon: Pokemon) => GetPokemonMapper.toResponseDto(pokemon))
+
+    const findOne = tryCatch(
+      async () => {
+        return await executeTask(this.pokemonRepository.findOne(slug));
+      },
+      (error: Error) => error as Error
     );
-    return executeTask(findOne);
+    const mapToResponseDto = chain<Error, Pokemon, PokemonResponseDto>(
+      (pokemon) => right(GetPokemonMapper.toResponseDto(pokemon))
+    );
+
+    const task = pipe(findOne, mapToResponseDto);
+    return executeTask(task);
   }
 }

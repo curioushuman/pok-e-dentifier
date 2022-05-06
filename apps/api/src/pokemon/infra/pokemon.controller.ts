@@ -33,7 +33,7 @@ export class PokemonController {
         const query = new GetPokemonQuery(getPokemonQueryDto);
         return await this.queryBus.execute<GetPokemonQuery>(query);
       },
-      (reason: unknown) => reason as Error
+      (error: Error) => error as Error
     );
 
     return await executeTask(getOneQuery);
