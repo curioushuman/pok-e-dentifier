@@ -165,6 +165,12 @@ TBC
 
 # Appendix
 
+## TODO
+
+### Value Objects being more OO
+
+At the moment they piggyback on runtypes (which I love) but are not super Type safe nor OO. For now they do the job (well) but in the future this needs revisiting.
+
 ## Inspiration
 
 ### Domain Driven Development (DDD)
