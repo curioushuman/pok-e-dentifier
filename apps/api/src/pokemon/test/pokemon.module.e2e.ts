@@ -52,17 +52,17 @@ describe('[E2E] PokemonModule', () => {
 
         test.todo('And the request/response is logged');
       });
-      // describe("Farfetch'd is a bit tricky, but savvy ppl remove the apostrophe", () => {
-      //   beforeAll(async () => {
-      //     pokemon = PokemonBuilder().withApostrophe().build();
-      //     response = await request(httpServer).get(
-      //       `/api/pokemon/${pokemon.slug}`
-      //     );
-      //   });
-      //   test('Then response status should be 200', () => {
-      //     expect(response.status).toBe(200);
-      //   });
-      // });
+      describe("Farfetch'd is a bit tricky, but savvy ppl remove the apostrophe", () => {
+        beforeAll(async () => {
+          pokemon = PokemonBuilder().withApostrophe().build();
+          response = await request(httpServer).get(
+            `/api/pokemon/${pokemon.slug}`
+          );
+        });
+        test('Then response status should be 200', () => {
+          expect(response.status).toBe(200);
+        });
+      });
     });
 
     // describe('When that Pokemon does not exist e.g. Furfligarbabard', () => {
