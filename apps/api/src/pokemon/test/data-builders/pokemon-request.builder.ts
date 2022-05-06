@@ -1,4 +1,4 @@
-import { GetPokemonRequestDto } from '../../application/queries/get-pokemon/get-pokemon.request.dto';
+import { GetPokemonRequestDto } from '../../infra/dto/get-pokemon.request.dto';
 
 /**
  * Heavily inspired by: https://github.com/VincentJouanne/nest-clean-architecture

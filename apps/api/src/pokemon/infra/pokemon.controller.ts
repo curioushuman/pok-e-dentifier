@@ -1,16 +1,18 @@
 import { BadRequestException, Controller, Get, Param } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { tryCatch } from 'fp-ts/lib/TaskEither';
+import { chain, right, tryCatch } from 'fp-ts/lib/TaskEither';
+import { pipe } from 'fp-ts/lib/function';
 
 import { LoggableLogger } from '@curioushuman/loggable';
 
 import { GetPokemonQuery } from '../application/queries/get-pokemon/get-pokemon.query';
 import { executeTask } from '../../shared/utils/execute-task';
-import { GetPokemonRequestDto } from '../application/queries/get-pokemon/get-pokemon.request.dto';
-import type { GetPokemonRequestDtoKeys } from '../application/queries/get-pokemon/get-pokemon.request.dto';
+import { GetPokemonRequestDto } from '../infra/dto/get-pokemon.request.dto';
+import type { GetPokemonRequestDtoKeys } from '../infra/dto/get-pokemon.request.dto';
 import { GetPokemonMapper } from '../application/queries/get-pokemon/get-pokemon.mapper';
-import { PokemonResponseDto } from '../application/dto/pokemon.response.dto';
+import { PokemonResponseDto } from '../infra/dto/pokemon.response.dto';
 import { ValidationError } from 'runtypes';
+import { Pokemon } from '../domain/entities/pokemon';
 
 @Controller('pokemon')
 export class PokemonController {
@@ -21,6 +23,9 @@ export class PokemonController {
     this.logger.setContext('PokemonController');
   }
 
+  /**
+   * TODO: Refactor to make simpler
+   */
   @Get(':slug')
   async getOne(
     @Param() params: Record<GetPokemonRequestDtoKeys, string>
@@ -41,7 +46,10 @@ export class PokemonController {
         return error;
       }
     );
-
-    return await executeTask(getOneQuery);
+    const mapToResponseDto = chain<Error, Pokemon, PokemonResponseDto>(
+      (pokemon) => right(GetPokemonMapper.toResponseDto(pokemon))
+    );
+    const task = pipe(getOneQuery, mapToResponseDto);
+    return executeTask(task);
   }
 }

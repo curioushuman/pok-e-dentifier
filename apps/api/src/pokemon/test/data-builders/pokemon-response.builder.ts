@@ -1,4 +1,4 @@
-import { PokemonResponseDto } from '../../application/dto/pokemon.response.dto';
+import { PokemonResponseDto } from '../../infra/dto/pokemon.response.dto';
 
 /**
  * Heavily inspired by: https://github.com/VincentJouanne/nest-clean-architecture

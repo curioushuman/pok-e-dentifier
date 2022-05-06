@@ -1,8 +1,8 @@
 import { GetPokemonQueryDto } from './get-pokemon.query.dto';
-import { GetPokemonRequestDto } from './get-pokemon.request.dto';
+import { GetPokemonRequestDto } from '../../../infra/dto/get-pokemon.request.dto';
 import { createSlug } from '../../../domain/value-objects/slug';
 import { Pokemon } from '../../../domain/entities/pokemon';
-import { PokemonResponseDto } from '../../dto/pokemon.response.dto';
+import { PokemonResponseDto } from '../../../infra/dto/pokemon.response.dto';
 
 /**
  * TODO
