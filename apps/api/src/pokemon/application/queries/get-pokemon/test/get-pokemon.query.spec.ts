@@ -10,7 +10,9 @@ import { PokemonBuilder } from '../../../../test/data-builders/pokemon.builder';
  *
  * Notes
  * - it is here, you might test other things that occur _around_ each query or command
+ *   - e.g. after post-command events are fired
  * - use mocks/spies to focus just on the subject under test (SUT)
+ *   - e.g. you can mock/spy on other commands just to make sure they receive the event
  */
 
 describe('[Unit] Get Pokemon Query', () => {

@@ -12,6 +12,9 @@ import { Pokemon } from '../domain/entities/pokemon';
  * E2E testing might look similar to more localised integration tests
  * However it should also include aspects such as:
  * - authentication/authorisation/access
+ *
+ * * NOTE: these often fail due to timeout the first time you run skaffold dev
+ * * If you make an additional minor change they'll run again and pass (grrr)
  */
 
 jest.setTimeout(10000);
