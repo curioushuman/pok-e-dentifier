@@ -9,5 +9,3 @@ export const GetPokemonRequestDto = Record({
 });
 
 export type GetPokemonRequestDto = Static<typeof GetPokemonRequestDto>;
-
-export type GetPokemonRequestDtoKeys = keyof GetPokemonRequestDto;

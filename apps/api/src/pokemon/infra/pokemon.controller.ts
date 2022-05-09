@@ -1,18 +1,17 @@
 import { BadRequestException, Controller, Get, Param } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { chain, right, tryCatch } from 'fp-ts/lib/TaskEither';
+import * as TE from 'fp-ts/lib/TaskEither';
 import { pipe } from 'fp-ts/lib/function';
+import * as E from 'fp-ts/lib/Either';
 
 import { LoggableLogger } from '@curioushuman/loggable';
 
 import { GetPokemonQuery } from '../application/queries/get-pokemon/get-pokemon.query';
 import { executeTask } from '../../shared/utils/execute-task';
 import { GetPokemonRequestDto } from '../infra/dto/get-pokemon.request.dto';
-import type { GetPokemonRequestDtoKeys } from '../infra/dto/get-pokemon.request.dto';
 import { GetPokemonMapper } from '../application/queries/get-pokemon/get-pokemon.mapper';
 import { PokemonResponseDto } from '../infra/dto/pokemon.response.dto';
-import { ValidationError } from 'runtypes';
-import { Pokemon } from '../domain/entities/pokemon';
+import { GetPokemonQueryDto } from '../application/queries/get-pokemon/get-pokemon.query.dto';
 
 @Controller('pokemon')
 export class PokemonController {
@@ -23,34 +22,42 @@ export class PokemonController {
     this.logger.setContext('PokemonController');
   }
 
-  /**
-   * TODO: Refactor to make simpler
-   * - could use the serialize decorator approach
-   */
   @Get(':slug')
   async getOne(
-    @Param() params: Record<GetPokemonRequestDtoKeys, string>
+    @Param() params: GetPokemonRequestDto
   ): Promise<PokemonResponseDto> {
-    const getOneQuery = tryCatch(
-      async () => {
-        // TODO: convert this first check into a decorator
-        const getPokemonRequestDto = GetPokemonRequestDto.check(params);
-        const getPokemonQueryDto =
-          GetPokemonMapper.toQueryDto(getPokemonRequestDto);
-        const query = new GetPokemonQuery(getPokemonQueryDto);
-        return await this.queryBus.execute<GetPokemonQuery>(query);
-      },
-      (error: Error) => {
-        if (error instanceof ValidationError) {
-          return new BadRequestException(error.toString());
-        }
-        return error;
-      }
+    const task = pipe(
+      params,
+      this.checkRequest,
+      TE.fromEither,
+      TE.chain((queryDto) =>
+        TE.tryCatch(
+          async () => {
+            const query = new GetPokemonQuery(queryDto);
+            return await this.queryBus.execute<GetPokemonQuery>(query);
+          },
+          (error: Error) => error as Error
+        )
+      ),
+      TE.chain((pokemon) => TE.right(GetPokemonMapper.toResponseDto(pokemon)))
     );
-    const mapToResponseDto = chain<Error, Pokemon, PokemonResponseDto>(
-      (pokemon) => right(GetPokemonMapper.toResponseDto(pokemon))
-    );
-    const task = pipe(getOneQuery, mapToResponseDto);
+
+    // return executeTask(task);
     return executeTask(task);
+  }
+
+  checkRequest(
+    params: GetPokemonRequestDto
+  ): E.Either<Error, GetPokemonQueryDto> {
+    return E.tryCatch(
+      () => {
+        return pipe(
+          params,
+          GetPokemonRequestDto.check,
+          GetPokemonMapper.toQueryDto
+        );
+      },
+      (error: Error) => new BadRequestException(error.toString())
+    );
   }
 }
